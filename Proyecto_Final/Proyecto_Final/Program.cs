@@ -21,11 +21,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // ---- Database ----
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Keeps Data Protection keys stable across restarts so encrypted Secrets remain readable.
+// ---- Data Protection ----
 builder.Services.AddDataProtection()
-    .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(builder.Environment.ContentRootPath, "keys")))
+    .PersistKeysToFileSystem(
+        new DirectoryInfo(
+            Path.Combine(builder.Environment.ContentRootPath, "keys")))
     .SetApplicationName("Proyecto_Final");
 
 // ---- Identity ----
@@ -36,17 +39,21 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Password.RequireUppercase = false;
     options.User.RequireUniqueEmail = true;
 })
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultTokenProviders();
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
 
 // ---- JWT Authentication ----
-builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
-var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>()!;
+var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+var jwtAudience = builder.Configuration["Jwt:Audience"];
+var jwtKey = builder.Configuration["Jwt:Key"];
 
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+
+    options.DefaultChallengeScheme =
+        JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(options =>
 {
@@ -56,24 +63,30 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtSettings.Issuer,
-        ValidAudience = jwtSettings.Audience,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
+
+        ValidIssuer = jwtIssuer,
+        ValidAudience = jwtAudience,
+
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(jwtKey!))
     };
 });
 
 builder.Services.AddAuthorization();
 
-// ---- CORS: allows the separate frontend project(s) built by the team to call this API ----
+// ---- CORS ----
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
     });
 });
 
-// ---- Application services (DI) ----
+// ---- Application services ----
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped<IContentParser, JsonContentParser>();
@@ -84,7 +97,8 @@ builder.Services.AddScoped<IContentParserFactory, ContentParserFactory>();
 builder.Services.AddHttpClient("SourceIngestion", client =>
 {
     client.Timeout = TimeSpan.FromSeconds(15);
-    client.DefaultRequestHeaders.UserAgent.ParseAdd("ProyectoFinal-NewsAggregator/1.0");
+    client.DefaultRequestHeaders.UserAgent.ParseAdd(
+        "ProyectoFinal-NewsAggregator/1.0");
 });
 
 builder.Services.AddScoped<IIngestionService, IngestionService>();
@@ -95,36 +109,51 @@ builder.Services.AddScoped<ITagExtractionService, TagExtractionService>();
 
 // ---- Controllers / Swagger ----
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Proyecto Final - News Aggregator API", Version = "v1" });
-
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "Ingresa: Bearer {tu token}"
-    });
-
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
+    options.SwaggerDoc(
+        "v1",
+        new OpenApiInfo
         {
-            new OpenApiSecurityScheme
+            Title = "Proyecto Final - News Aggregator API",
+            Version = "v1"
+        });
+
+    options.AddSecurityDefinition(
+        "Bearer",
+        new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer",
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Description = "Ingresa: Bearer {tu token}"
+        });
+
+    options.AddSecurityRequirement(
+        new OpenApiSecurityRequirement
+        {
             {
-                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-            },
-            Array.Empty<string>()
-        }
-    });
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                Array.Empty<string>()
+            }
+        });
 });
 
 var app = builder.Build();
 
-// ---- Seed database (migrate + roles + admin user + demo sources) ----
+// ---- Seed database ----
 using (var scope = app.Services.CreateScope())
 {
     await DbInitializer.SeedAsync(scope.ServiceProvider);
@@ -138,6 +167,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 

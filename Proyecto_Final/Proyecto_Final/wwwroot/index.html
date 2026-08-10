@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Proyecto Final - Tendencias</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <main class="container">
+
+        <header class="header">
+            <div>
+                <p class="eyebrow">PROYECTO FINAL</p>
+                <h1>📰 News Aggregator</h1>
+                <p>Panel de tendencias y análisis de noticias</p>
+            </div>
+
+            <button id="refreshButton" class="refresh-button">
+                🔄 Actualizar
+            </button>
+        </header>
+
+        <section class="summary-grid">
+
+            <div class="summary-card">
+                <span class="summary-title">Noticias analizadas</span>
+                <strong id="totalItems">0</strong>
+            </div>
+
+            <div class="summary-card">
+                <span class="summary-title">Palabras clave</span>
+                <strong id="totalKeywords">0</strong>
+            </div>
+
+            <div class="summary-card">
+                <span class="summary-title">Estado</span>
+                <strong id="status">Cargando...</strong>
+            </div>
+
+        </section>
+
+        <section class="dashboard">
+
+            <div class="card">
+                <div class="card-title">
+                    <div>
+                        <span class="icon">🔥</span>
+                        <h2>Temas del momento</h2>
+                    </div>
+                </div>
+
+                <p class="description">
+                    Palabras clave con mayor frecuencia entre las noticias analizadas.
+                </p>
+
+                <div id="keywordsContainer">
+                    <p class="loading">Cargando tendencias...</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <div>
+                        <span class="icon">💭</span>
+                        <h2>Análisis de sentimiento</h2>
+                    </div>
+                </div>
+
+                <p class="description">
+                    Distribución del sentimiento detectado en las noticias.
+                </p>
+
+                <div id="sentimentContainer">
+                    <p class="loading">Cargando sentimiento...</p>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="card technologies">
+
+            <div class="card-title">
+                <div>
+                    <span class="icon">🛠️</span>
+                    <h2>Tecnologías utilizadas</h2>
+                </div>
+            </div>
+
+            <div class="tech-list">
+                <span>ASP.NET Core 8</span>
+                <span>C#</span>
+                <span>SQL Server</span>
+                <span>Entity Framework Core</span>
+                <span>JWT</span>
+                <span>REST API</span>
+                <span>Swagger</span>
+                <span>HTML</span>
+                <span>CSS</span>
+                <span>JavaScript</span>
+            </div>
+
+        </section>
+
+        <footer>
+            <p>Proyecto Final - News Aggregator API</p>
+            <p>Endpoint utilizado: <strong>GET /api/trending</strong></p>
+        </footer>
+
+    </main>
+
+    <script src="/js/trending.js"></script>
+
+</body>
+</html>

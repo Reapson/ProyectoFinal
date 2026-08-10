@@ -42,10 +42,20 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
+// ---- JWT Settings ----
+builder.Services.Configure<JwtSettings>(
+    builder.Configuration.GetSection("Jwt"));
+
 // ---- JWT Authentication ----
 var jwtIssuer = builder.Configuration["Jwt:Issuer"];
 var jwtAudience = builder.Configuration["Jwt:Audience"];
 var jwtKey = builder.Configuration["Jwt:Key"];
+
+if (string.IsNullOrWhiteSpace(jwtKey))
+{
+    throw new InvalidOperationException(
+        "La configuración Jwt:Key no está configurada.");
+}
 
 builder.Services.AddAuthentication(options =>
 {
@@ -68,7 +78,7 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = jwtAudience,
 
         IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(jwtKey!))
+            Encoding.UTF8.GetBytes(jwtKey))
     };
 });
 

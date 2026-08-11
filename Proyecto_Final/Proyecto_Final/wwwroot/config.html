@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración - Admin</title>
+    <link rel="stylesheet" href="css/config.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <h1>Configuración del Sistema</h1>
+            <div>
+                <span id="usuario"></span>
+                <button id="btnVolver" class="btn-secondary">Volver al inicio</button>
+                <button id="logout" class="btn-danger">Cerrar sesión</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Sección de Gestión de Roles -->
+        <section class="panel">
+            <h2>?? Gestión de Roles</h2>
+            
+            <div class="section">
+                <h3>Usuarios y sus roles</h3>
+                <table id="usersTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Nombre</th>
+                            <th>Roles actuales</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="4" class="loading">Cargando usuarios...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h3>Asignar/Remover Rol</h3>
+                <div class="form-group">
+                    <select id="selectUser" placeholder="Selecciona un usuario">
+                        <option value="">-- Selecciona un usuario --</option>
+                    </select>
+                    <select id="selectRole" placeholder="Selecciona un rol">
+                        <option value="">-- Selecciona un rol --</option>
+                    </select>
+                    <button id="btnAssignRole" class="btn">Asignar rol</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Gestión de Secrets -->
+        <section class="panel">
+            <h2>?? Gestión de API Keys (Secrets)</h2>
+            
+            <div class="section">
+                <h3>Secrets almacenados</h3>
+                <table id="secretsTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Clave</th>
+                            <th>Descripción</th>
+                            <th>Valor</th>
+                            <th>Última actualización</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="5" class="loading">Cargando secrets...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h3>Crear/Actualizar Secret</h3>
+                <div class="form-group">
+                    <input type="text" id="secretKey" placeholder="Clave del secret (ej: NewsApiKey)">
+                    <input type="text" id="secretValue" placeholder="Valor del secret">
+                    <input type="text" id="secretDescription" placeholder="Descripción (opcional)">
+                    <button id="btnUpsertSecret" class="btn">Guardar Secret</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Descarga/Subida de JSON -->
+        <section class="panel">
+            <h2>?? Descargar/Subir Items como JSON</h2>
+            
+            <div class="section">
+                <h3>Descargar item</h3>
+                <p class="info">Selecciona un item guardado para descargarlo como JSON</p>
+                <div id="itemsList" class="items-grid">
+                    <p class="loading">Cargando items...</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Subir JSON</h3>
+                <p class="info">Sube un archivo JSON exportado de otra instancia</p>
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="fileInput" accept=".json" style="display: none;">
+                    <div class="upload-content">
+                        <p>?? Arrastra un archivo JSON aquí o haz clic para seleccionar</p>
+                    </div>
+                </div>
+                <div id="uploadResult" class="hidden"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div id="confirmModal" class="modal hidden">
+        <div class="modal-content">
+            <h3 id="confirmTitle">Confirmación</h3>
+            <p id="confirmMessage"></p>
+            <div class="modal-buttons">
+                <button id="confirmBtn" class="btn">Confirmar</button>
+                <button id="cancelBtn" class="btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast de notificaciones -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/config.js"></script>
+</body>
+
+</html>

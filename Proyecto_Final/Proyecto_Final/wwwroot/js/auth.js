@@ -40,27 +40,40 @@ function parseJwt(token){
 
 }
 
-function obtenerRol(){
+function obtenerRoles(){
 
     const token=obtenerToken();
 
     if(token==null)
 
-        return null;
+        return [];
 
     const payload=parseJwt(token);
 
     if(payload==null)
 
-        return null;
+        return [];
 
-    return payload.role
-        ||payload.Role
-        ||payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+    const rolesClaim = payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role"];
+    
+    if(Array.isArray(rolesClaim)) {
+        return rolesClaim;
+    } else if(rolesClaim) {
+        return [rolesClaim];
+    }
+    
+    return [];
+}
+
+function obtenerRol(){
+
+    const roles=obtenerRoles();
+
+    return roles.length > 0 ? roles[0] : null;
 }
 
 function esAdmin(){
 
-    return obtenerRol()=="Admin";
+    return obtenerRoles().includes("Admin");
 
 }

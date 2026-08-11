@@ -1,4 +1,5 @@
 const boton = document.getElementById("btnLogin");
+const mensajeEl = document.getElementById("mensaje");
 
 boton.addEventListener("click", async () => {
 
@@ -6,11 +7,15 @@ boton.addEventListener("click", async () => {
     const password = document.getElementById("password").value.trim();
 
     if(email === "" || password === ""){
-        document.getElementById("mensaje").innerHTML = "Complete todos los campos";
+        mensajeEl.innerHTML = "❌ Por favor completa todos los campos";
         return;
     }
 
     try{
+        // Mostrar estado de carga
+        boton.disabled = true;
+        boton.textContent = "Iniciando sesión...";
+        mensajeEl.innerHTML = "";
 
         const respuesta = await login({
             email,
@@ -30,17 +35,25 @@ boton.addEventListener("click", async () => {
             window.location.href = "index.html";
 
         }
+        else if(respuesta.error){
+            mensajeEl.innerHTML = "❌ " + respuesta.error;
+            boton.disabled = false;
+            boton.textContent = "Ingresar";
+        }
         else{
 
-            document.getElementById("mensaje").innerHTML = "Credenciales incorrectas";
+            mensajeEl.innerHTML = "❌ Credenciales incorrectas o usuario no existe";
+            boton.disabled = false;
+            boton.textContent = "Ingresar";
 
         }
 
     }
-    catch{
-
-        document.getElementById("mensaje").innerHTML = "No fue posible iniciar sesión.";
-
+    catch(error){
+        console.error("Error en login:", error);
+        mensajeEl.innerHTML = "❌ Error: No se pudo conectar con el servidor. ¿Está ejecutándose?";
+        boton.disabled = false;
+        boton.textContent = "Ingresar";
     }
 
 });

@@ -13,6 +13,8 @@ if (esAdmin()) {
 
     document.getElementById("adminPanel").style.display = "block";
 
+    document.getElementById("btnConfig").style.display = "block";
+
 }
 
 cargarNoticias();

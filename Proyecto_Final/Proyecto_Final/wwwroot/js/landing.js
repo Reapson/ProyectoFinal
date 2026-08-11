@@ -33,31 +33,47 @@ async function cargarNoticias() {
 
         card.innerHTML = `
 
-        <img src="${item.imageUrl ?? ''}">
+<img src="${item.imageUrl || 'https://placehold.co/600x300?text=Sin+Imagen'}">
 
-        <h2>${item.title ?? ''}</h2>
+<h2>${item.title}</h2>
 
-        <p>${item.description ?? ''}</p>
+<p>${item.description ?? ''}</p>
 
-        <div class="buttons">
+<small>
+👤 ${item.author ?? 'Autor desconocido'}
+</small>
 
-        <button class="read">
+<small>
+ ${item.publishedAt
+                ? new Date(item.publishedAt).toLocaleDateString()
+                : 'Sin fecha'
+            }
+</small>
 
-        Leer
+<div class="buttons">
 
-        </button>
+<button class="read">
+Leer más
+</button>
 
-        ${estaLogueado()
-                ? '<button class="save">Guardar</button>'
-                : ''}
+${estaLogueado()
+                ?
+                '<button class="save">Guardar</button>'
+                :
+                ''
+            }
 
-        </div>
+</div>
 
-        `;
+`;
 
         card.querySelector(".read").onclick = () => {
 
-            window.open(item.link);
+            if (item.url) {
+
+                window.open(item.url, "_blank");
+
+            }
 
         };
 

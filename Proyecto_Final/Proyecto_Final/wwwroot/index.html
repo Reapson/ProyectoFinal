@@ -1,119 +1,68 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Proyecto Final - Tendencias</title>
+<meta charset="UTF-8">
 
-    <link rel="stylesheet" href="/css/style.css">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Noticias</title>
+
+<link rel="stylesheet" href="css/styles.css">
+
 </head>
 
 <body>
 
-    <main class="container">
+<header>
 
-        <header class="header">
-            <div>
-                <p class="eyebrow">PROYECTO FINAL</p>
-                <h1>📰 News Aggregator</h1>
-                <p>Panel de tendencias y análisis de noticias</p>
-            </div>
+<nav>
 
-            <button id="refreshButton" class="refresh-button">
-                🔄 Actualizar
-            </button>
-        </header>
+<h1>Proyecto Final</h1>
 
-        <section class="summary-grid">
+<div>
 
-            <div class="summary-card">
-                <span class="summary-title">Noticias analizadas</span>
-                <strong id="totalItems">0</strong>
-            </div>
+<span id="usuario"></span>
 
-            <div class="summary-card">
-                <span class="summary-title">Palabras clave</span>
-                <strong id="totalKeywords">0</strong>
-            </div>
+<button id="logout">
 
-            <div class="summary-card">
-                <span class="summary-title">Estado</span>
-                <strong id="status">Cargando...</strong>
-            </div>
+Cerrar sesión
 
-        </section>
+</button>
 
-        <section class="dashboard">
+</div>
 
-            <div class="card">
-                <div class="card-title">
-                    <div>
-                        <span class="icon">🔥</span>
-                        <h2>Temas del momento</h2>
-                    </div>
-                </div>
+</nav>
 
-                <p class="description">
-                    Palabras clave con mayor frecuencia entre las noticias analizadas.
-                </p>
+</header>
 
-                <div id="keywordsContainer">
-                    <p class="loading">Cargando tendencias...</p>
-                </div>
-            </div>
+<div id="adminPanel" style="display:none;">
 
-            <div class="card">
-                <div class="card-title">
-                    <div>
-                        <span class="icon">💭</span>
-                        <h2>Análisis de sentimiento</h2>
-                    </div>
-                </div>
+<h2>Agregar Fuente</h2>
 
-                <p class="description">
-                    Distribución del sentimiento detectado en las noticias.
-                </p>
+<input id="sourceName" placeholder="Nombre">
 
-                <div id="sentimentContainer">
-                    <p class="loading">Cargando sentimiento...</p>
-                </div>
-            </div>
+<input id="sourceUrl" placeholder="URL">
 
-        </section>
+<input id="sourceDescription" placeholder="Descripción">
 
-        <section class="card technologies">
+<input id="componentType" placeholder="Component Type">
 
-            <div class="card-title">
-                <div>
-                    <span class="icon">🛠️</span>
-                    <h2>Tecnologías utilizadas</h2>
-                </div>
-            </div>
+<label>
 
-            <div class="tech-list">
-                <span>ASP.NET Core 8</span>
-                <span>C#</span>
-                <span>SQL Server</span>
-                <span>Entity Framework Core</span>
-                <span>JWT</span>
-                <span>REST API</span>
-                <span>Swagger</span>
-                <span>HTML</span>
-                <span>CSS</span>
-                <span>JavaScript</span>
-            </div>
+<input type="checkbox" id="requiresSecret">
 
-        </section>
+Requiere Secret
 
-        <footer>
-            <p>Proyecto Final - News Aggregator API</p>
-            <p>Endpoint utilizado: <strong>GET /api/trending</strong></p>
-        </footer>
+</label>
 
-    </main>
+<input id="secretKeyName" placeholder="Secret Key Name">
 
-    <script src="/js/trending.js"></script>
+<button id="btnFuente">
 
-</body>
-</html>
+Agregar Fuente
+
+</button>
+
+</div>

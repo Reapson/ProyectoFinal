@@ -68,7 +68,7 @@ async function getItems(){
 
 async function guardar(item){
 
-    const response=await fetch(API+"/sourceitems",{
+    const response = await fetch(API + "/sourceitems",{
 
         method:"POST",
 
@@ -78,13 +78,19 @@ async function guardar(item){
 
     });
 
+    if(!response.ok){
+
+        throw new Error(await response.text());
+
+    }
+
     return await response.json();
 
 }
 
 async function crearFuente(fuente){
 
-    const response=await fetch(API+"/sources",{
+    const response = await fetch(API + "/sources",{
 
         method:"POST",
 
@@ -93,6 +99,12 @@ async function crearFuente(fuente){
         body:JSON.stringify(fuente)
 
     });
+
+    if(!response.ok){
+
+        throw new Error(await response.text());
+
+    }
 
     return await response.json();
 

@@ -1,4 +1,4 @@
-const API="https://localhost:5001/api";
+﻿const API="https://localhost:7200/api";
 
 function getToken(){
 
@@ -19,43 +19,39 @@ function authHeader(){
 }
 
 async function login(user){
-
-    const response=await fetch(API+"/auth/login",{
-
-        method:"POST",
-
-        headers:{
-
-            "Content-Type":"application/json"
-
+    console.log("🔐 Función login() llamada con:", { email: user.email });
+    
+    const response = await fetch(API + "/auth/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
         },
-
-        body:JSON.stringify(user)
-
+        body: JSON.stringify(user)
     });
 
-    return await response.json();
-
+    console.log("📬 Respuesta recibida:", response.status, response.statusText);
+    const data = await response.json();
+    console.log("📊 Datos JSON:", data);
+    
+    return data;
 }
 
 async function register(user){
-
-    const response=await fetch(API+"/auth/register",{
-
-        method:"POST",
-
-        headers:{
-
-            "Content-Type":"application/json"
-
+    console.log("📝 Función register() llamada con:", { email: user.email, displayName: user.displayName });
+    
+    const response = await fetch(API + "/auth/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
         },
-
-        body:JSON.stringify(user)
-
+        body: JSON.stringify(user)
     });
 
-    return await response.json();
-
+    console.log("📬 Respuesta recibida:", response.status, response.statusText);
+    const data = await response.json();
+    console.log("📊 Datos JSON:", data);
+    
+    return data;
 }
 
 async function getItems(){

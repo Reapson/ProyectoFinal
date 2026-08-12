@@ -22,36 +22,27 @@ boton.addEventListener("click", async () => {
             password
         });
 
-        if(respuesta.token){
+        localStorage.setItem("token", respuesta.token);
 
-            localStorage.setItem("token", respuesta.token);
+        localStorage.setItem("email", respuesta.email);
 
-            localStorage.setItem("email", respuesta.email);
+        localStorage.setItem("displayName", respuesta.displayName);
 
-            localStorage.setItem("displayName", respuesta.displayName);
+        localStorage.setItem("roles", JSON.stringify(respuesta.roles));
 
-            localStorage.setItem("roles", JSON.stringify(respuesta.roles));
-
-            window.location.href = "index.html";
-
-        }
-        else if(respuesta.error){
-            mensajeEl.innerHTML = "❌ " + respuesta.error;
-            boton.disabled = false;
-            boton.textContent = "Ingresar";
-        }
-        else{
-
-            mensajeEl.innerHTML = "❌ Credenciales incorrectas o usuario no existe";
-            boton.disabled = false;
-            boton.textContent = "Ingresar";
-
-        }
+        window.location.href = "index.html";
 
     }
     catch(error){
         console.error("Error en login:", error);
-        mensajeEl.innerHTML = "❌ Error: No se pudo conectar con el servidor. ¿Está ejecutándose?";
+
+        if(error instanceof TypeError){
+            mensajeEl.innerHTML = "❌ No se pudo conectar con el servidor. ¿Está ejecutándose?";
+        }
+        else{
+            mensajeEl.innerHTML = "❌ " + error.message;
+        }
+
         boton.disabled = false;
         boton.textContent = "Ingresar";
     }

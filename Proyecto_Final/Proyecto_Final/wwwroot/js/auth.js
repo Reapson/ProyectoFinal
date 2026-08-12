@@ -54,7 +54,7 @@ function obtenerRoles(){
 
         return [];
 
-    const rolesClaim = payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role"];
+    const rolesClaim = payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
     
     if(Array.isArray(rolesClaim)) {
         return rolesClaim;

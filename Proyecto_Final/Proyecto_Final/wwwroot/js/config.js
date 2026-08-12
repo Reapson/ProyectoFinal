@@ -10,13 +10,13 @@ const usuarioEl = document.getElementById('usuario');
 const logoutBtn = document.getElementById('logout');
 const btnVolver = document.getElementById('btnVolver');
 
-// GestiÛn de roles
+// Gesti√≥n de roles
 const selectUser = document.getElementById('selectUser');
 const selectRole = document.getElementById('selectRole');
 const btnAssignRole = document.getElementById('btnAssignRole');
 const usersTable = document.getElementById('usersTable');
 
-// GestiÛn de secrets
+// Gesti√≥n de secrets
 const secretKey = document.getElementById('secretKey');
 const secretValue = document.getElementById('secretValue');
 const secretDescription = document.getElementById('secretDescription');
@@ -39,7 +39,7 @@ const cancelBtn = document.getElementById('cancelBtn');
 // Toast
 const toast = document.getElementById('toast');
 
-// InicializaciÛn
+// Inicializaci√≥n
 document.addEventListener('DOMContentLoaded', () => {
     if (!estaLogueado() || !esAdmin()) {
         window.location.href = 'login.html';
@@ -55,7 +55,7 @@ function mostrarUsuario() {
     const token = obtenerToken();
     const payload = parseJwt(token);
     if (payload) {
-        usuarioEl.textContent = `?? ${payload.email || 'Usuario'}`;
+        usuarioEl.textContent = `üë§ ${payload.email || 'Usuario'}`;
     }
 }
 
@@ -163,7 +163,7 @@ function actualizarTablaUsuarios() {
             <td>${escapeHtml(user.email)}</td>
             <td>${escapeHtml(user.displayName)}</td>
             <td>
-                ${user.roles.length > 0 
+                ${user.roles.length > 0
                     ? user.roles.map(role => `<span class="badge ${role.toLowerCase()}">${role}</span>`).join('')
                     : '<span style="color: #9ca3af;">Sin roles</span>'
                 }
@@ -209,7 +209,7 @@ async function removerRol(userId, role) {
     const user = allUsers.find(u => u.id === userId);
     mostrarConfirmacion(
         `Remover rol ${role}`,
-        `øEst·s seguro de que deseas quitar el rol ${role} de ${user.email}?`,
+        `¬øEst√°s seguro de que deseas quitar el rol ${role} de ${user.email}?`,
         async () => {
             try {
                 await removeRole(userId, role);
@@ -243,7 +243,7 @@ function actualizarTablaSecrets() {
     tbody.innerHTML = allSecrets.map(secret => `
         <tr>
             <td><code>${escapeHtml(secret.key)}</code></td>
-            <td>${escapeHtml(secret.description || 'Sin descripciÛn')}</td>
+            <td>${escapeHtml(secret.description || 'Sin descripci√≥n')}</td>
             <td><code>${secret.maskedValue}</code></td>
             <td>${new Date(secret.updatedAt).toLocaleString()}</td>
             <td class="actions">
@@ -280,7 +280,7 @@ async function guardarSecret() {
 async function eliminarSecret(key) {
     mostrarConfirmacion(
         'Eliminar Secret',
-        `øEst·s seguro de que deseas eliminar el secret "${key}"?`,
+        `¬øEst√°s seguro de que deseas eliminar el secret "${key}"?`,
         async () => {
             try {
                 await deleteSecret(key);
@@ -298,7 +298,9 @@ async function eliminarSecret(key) {
 async function cargarItems() {
     try {
         const items = await getItems();
-        allItems = items;
+        // Solo items realmente guardados en la BD tienen "id"; los items en
+        // vivo (fallback cuando no hay nada guardado) no se pueden descargar.
+        allItems = items.filter(item => item.id !== undefined && item.id !== null);
         actualizarListaItems();
     } catch (error) {
         mostrarToast('Error al cargar items: ' + error.message, 'error');
@@ -313,15 +315,15 @@ function actualizarListaItems() {
 
     itemsList.innerHTML = allItems.map(item => `
         <div class="item-card">
-            <h4>${escapeHtml(item.item?.title || 'Sin tÌtulo')}</h4>
-            <p>${escapeHtml(item.item?.description || 'Sin descripciÛn').substring(0, 100)}</p>
+            <h4>${escapeHtml(item.item?.title || 'Sin t√≠tulo')}</h4>
+            <p>${escapeHtml(item.item?.description || 'Sin descripci√≥n').substring(0, 100)}</p>
             <div class="meta">
                 <span>${item.sourceName || 'Fuente desconocida'}</span>
                 <span>${new Date(item.createdAt).toLocaleDateString()}</span>
             </div>
             <div class="actions">
                 <button class="btn btn-download" onclick="descargarItem(${item.id})">
-                    ?? Descargar
+                    üì• Descargar
                 </button>
             </div>
         </div>
@@ -339,7 +341,7 @@ async function descargarItem(itemId) {
 
 async function subirArchivo(file) {
     if (!file.type.includes('json')) {
-        mostrarToast('Por favor sube un archivo JSON v·lido', 'error');
+        mostrarToast('Por favor sube un archivo JSON v√°lido', 'error');
         return;
     }
 
@@ -348,7 +350,7 @@ async function subirArchivo(file) {
     try {
         const resultado = await uploadItems(file);
         mostrarToast('Item subido exitosamente', 'success');
-        
+
         mostrarResultadoUpload(resultado, false);
         fileInput.value = '';
         await cargarItems();
@@ -359,19 +361,19 @@ async function subirArchivo(file) {
 
 function mostrarResultadoUpload(data, esError = false, errorMsg = '') {
     uploadResult.classList.remove('hidden');
-    
+
     if (esError) {
         uploadResult.className = 'upload-result error';
         uploadResult.innerHTML = `
-            <h4>? Error al subir el archivo</h4>
+            <h4>‚ùå Error al subir el archivo</h4>
             <p>${escapeHtml(errorMsg)}</p>
         `;
     } else {
         uploadResult.className = 'upload-result';
         uploadResult.innerHTML = `
-            <h4>? Item subido exitosamente</h4>
+            <h4>‚úÖ Item subido exitosamente</h4>
             <p><strong>ID:</strong> ${data.id}</p>
-            <p><strong>TÌtulo:</strong> ${escapeHtml(data.item?.title || 'Sin tÌtulo')}</p>
+            <p><strong>T√≠tulo:</strong> ${escapeHtml(data.item?.title || 'Sin t√≠tulo')}</p>
             <p><strong>Fuente:</strong> ${escapeHtml(data.sourceName || 'Desconocida')}</p>
             <p><strong>Fecha:</strong> ${new Date(data.createdAt).toLocaleString()}</p>
         `;

@@ -2,11 +2,11 @@
 
 ## 1. Login
 
-Mostrar el inicio de sesi髇.
+Mostrar el inicio de sesi贸n.
 
 Explicar:
 
-"El sistema utiliza autenticaci髇 JWT para identificar al usuario y proteger los endpoints que requieren autenticaci髇."
+"El sistema utiliza autenticaci贸n JWT para identificar al usuario y proteger los endpoints que requieren autenticaci贸n."
 
 ---
 
@@ -22,7 +22,7 @@ Explicar:
 
 ## 3. Guardar elemento
 
-Seleccionar un elemento y utilizar la opci髇 de guardar.
+Seleccionar un elemento y utilizar la opci贸n de guardar.
 
 Explicar:
 
@@ -34,7 +34,7 @@ Explicar:
 
 Descargar un elemento en formato JSON.
 
-Despu閟 utilizar la opci髇 de Upload para cargar el archivo.
+Despu茅s utilizar la opci贸n de Upload para cargar el archivo.
 
 Explicar:
 
@@ -42,7 +42,7 @@ Explicar:
 
 ---
 
-## 5. Configuraci髇
+## 5. Configuraci贸n
 
 Ingresar como administrador.
 
@@ -50,19 +50,19 @@ Mostrar:
 
 - Usuarios.
 - Roles.
-- Asignaci髇 de roles.
-- Eliminaci髇 de roles.
+- Asignaci贸n de roles.
+- Eliminaci贸n de roles.
 - Secrets.
 
 Explicar:
 
-"Las funciones administrativas est醤 protegidas mediante autorizaci髇 por roles."
+"Las funciones administrativas est谩n protegidas mediante autorizaci贸n por roles."
 
 ---
 
 ## 6. Elemento Sorpresa - Tendencias
 
-Abrir el widget de Tendencias.
+Mostrar la secci贸n de Tendencias en la landing page.
 
 Mostrar:
 
@@ -91,11 +91,11 @@ Mostrar la respuesta JSON.
 
 Explicar:
 
-"El backend analiza los SourceItems guardados, extrae las palabras clave m醩 frecuentes y realiza una clasificaci髇 b醩ica de sentimiento."
+"El backend analiza los SourceItems guardados, extrae las palabras clave m谩s frecuentes y realiza una clasificaci贸n b谩sica de sentimiento."
 
 ---
 
-## 8. C骴igo de Tendencias
+## 8. C贸digo de Tendencias
 
 Mostrar brevemente:
 
@@ -106,3 +106,4 @@ DTOs/Trending/
 wwwroot/index.html
 wwwroot/css/style.css
 wwwroot/js/trending.js
+```

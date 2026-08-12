@@ -16,7 +16,7 @@ document.getElementById("btnRegistro").addEventListener("click", async ()=>{
 
     try{
 
-        const respuesta = await register({
+        await register({
 
             displayName,
 
@@ -32,9 +32,14 @@ document.getElementById("btnRegistro").addEventListener("click", async ()=>{
 
     }
 
-    catch{
+    catch(error){
 
-        document.getElementById("mensaje").innerHTML="No fue posible registrar el usuario.";
+        if(error instanceof TypeError){
+            document.getElementById("mensaje").innerHTML="No se pudo conectar con el servidor. ¿Está ejecutándose?";
+        }
+        else{
+            document.getElementById("mensaje").innerHTML=error.message;
+        }
 
     }
 

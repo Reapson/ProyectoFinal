@@ -1,17 +1,17 @@
 # Proyecto Final - News Aggregator
 
-Sistema web para la gesti髇, consulta y an醠isis de contenido proveniente de diferentes fuentes de informaci髇.
+Sistema web para la gesti贸n, consulta y an谩lisis de contenido proveniente de diferentes fuentes de informaci贸n.
 
-El proyecto utiliza una API REST desarrollada con ASP.NET Core 8, autenticaci髇 mediante JWT, ASP.NET Core Identity, Entity Framework Core y SQL Server.
+El proyecto utiliza una API REST desarrollada con ASP.NET Core 8, autenticaci贸n mediante JWT, ASP.NET Core Identity, Entity Framework Core y SQL Server. El frontend es HTML/CSS/JavaScript plano, servido como archivos est谩ticos por la misma aplicaci贸n (carpeta `wwwroot`).
 
 ---
 
-## Tecnolog韆s utilizadas
+## Tecnolog铆as utilizadas
 
 - ASP.NET Core 8
 - C#
 - Entity Framework Core 8
-- SQL Server
+- SQL Server (LocalDB)
 - ASP.NET Core Identity
 - JWT Authentication
 - REST API
@@ -38,3 +38,44 @@ Para ejecutar el proyecto se necesita:
 
 ```bash
 git clone https://github.com/Reapson/ProyectoFinal.git
+```
+
+---
+
+## C贸mo correr el proyecto
+
+1. Abrir `Proyecto_Final.sln` en Visual Studio (o `Proyecto_Final/Proyecto_Final` en la terminal).
+2. Presionar F5 (o `dotnet run` desde la carpeta `Proyecto_Final/Proyecto_Final`).
+3. Al iniciar, la aplicaci贸n aplica las migraciones de Entity Framework autom谩ticamente y siembra datos de ejemplo: roles (`Admin`, `User`), un usuario administrador y dos fuentes de noticias de demo.
+4. El sitio queda disponible en la URL que indique la consola (por ejemplo `http://localhost:5208`). La p谩gina principal (`/` o `/index.html`) es la landing page; Swagger est谩 en `/swagger`.
+
+### Credenciales de prueba
+
+- **Email:** `admin@proyectofinal.com`
+- **Password:** `Admin123!`
+
+---
+
+## Estructura del frontend (`wwwroot`)
+
+| P谩gina | Descripci贸n |
+|---|---|
+| `index.html` | Landing page: lista de noticias (guardadas o en vivo), bot贸n guardar, panel de Admin para agregar fuentes, secci贸n de Tendencias. |
+| `login.html` / `register.html` | Autenticaci贸n de usuarios. |
+| `config.html` | Panel de Admin: asignar/quitar roles, gestionar Secrets, descargar/subir items en JSON. |
+
+Todas las p谩ginas consumen la API v铆a `wwwroot/js/api.js`, que usa una ruta **relativa** (`/api`) para funcionar sin importar el puerto en el que corra la aplicaci贸n (misma origin, ya que el frontend lo sirve el propio backend).
+
+---
+
+## Correcciones aplicadas (bug-fixing final antes de la demo)
+
+Tras integrar el trabajo de todo el equipo se hizo una revisi贸n completa y se corrigieron los siguientes problemas:
+
+- **Cr铆tico:** `js/api.js` ten铆a la URL de la API hardcodeada a `https://localhost:5001/api`, un puerto que no coincide con ning煤n perfil de `launchSettings.json`. Esto romp铆a login, registro, landing, guardar, agregar fuente, configuraci贸n y download/upload. Se cambi贸 a una ruta relativa (`/api`).
+- **Cr铆tico:** `index.html` estaba incompleto: le faltaba el contenedor `#items` (donde se pintan las noticias), las etiquetas `<script>` de `api.js`/`auth.js`/`landing.js`, y el cierre de `</body></html>`. Se complet贸 el archivo.
+- `index.html` referenciaba `css/styles.css` (no existe); el archivo real es `css/style.css`. Corregido.
+- `config.html` y `config.js` estaban guardados con una codificaci贸n distinta a UTF-8, mostrando texto corrupto (`Configuraci锟絥`, `??`, etc.). Se re-guardaron en UTF-8.
+- Se integr贸 la secci贸n de **Tendencias** (Elemento Sorpresa) dentro de `index.html`, que antes no estaba conectada a ninguna p谩gina (`js/trending.js` exist铆a pero no se usaba en ning煤n HTML).
+- En `config.js`, la lista de items para descargar ahora filtra 煤nicamente los items realmente guardados en la base de datos (con `id`), evitando un error al intentar descargar un item en vivo sin guardar.
+- `login.js` / `register.js` ahora muestran el mensaje de error real que devuelve la API en vez de un mensaje gen茅rico.

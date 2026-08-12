@@ -1,4 +1,4 @@
-const API="https://localhost:5001/api";
+const API="/api";
 
 function getToken(){
 
@@ -18,6 +18,45 @@ function authHeader(){
 
 }
 
+async function extraerMensajeError(response){
+
+    try{
+
+        const data = await response.json();
+
+        if(typeof data === "string") return data;
+
+        if(Array.isArray(data)) return data.join(", ");
+
+        if(data && data.error) return data.error;
+
+        if(data && data.title) return data.title;
+
+        return JSON.stringify(data);
+
+    }
+
+    catch{
+
+        return `Error ${response.status}`;
+
+    }
+
+}
+
+// Algunos endpoints responden 200/204 sin body (Ok() / NoContent()).
+// response.json() lanza excepción en ese caso, así que leemos como texto
+// primero y solo parseamos si realmente hay contenido.
+async function parseJsonSiHayContenido(response){
+
+    const texto = await response.text();
+
+    if(!texto) return null;
+
+    return JSON.parse(texto);
+
+}
+
 async function login(user){
 
     const response=await fetch(API+"/auth/login",{
@@ -33,6 +72,12 @@ async function login(user){
         body:JSON.stringify(user)
 
     });
+
+    if(!response.ok){
+
+        throw new Error(await extraerMensajeError(response));
+
+    }
 
     return await response.json();
 
@@ -53,6 +98,12 @@ async function register(user){
         body:JSON.stringify(user)
 
     });
+
+    if(!response.ok){
+
+        throw new Error(await extraerMensajeError(response));
+
+    }
 
     return await response.json();
 
@@ -158,7 +209,7 @@ async function assignRole(userId, role){
 
     if(!response.ok) throw new Error(await response.text());
 
-    return await response.json();
+    return await parseJsonSiHayContenido(response);
 
 }
 
@@ -176,7 +227,7 @@ async function removeRole(userId, role){
 
     if(!response.ok) throw new Error(await response.text());
 
-    return await response.json();
+    return await parseJsonSiHayContenido(response);
 
 }
 
@@ -210,7 +261,7 @@ async function upsertSecret(key, value, description){
 
     if(!response.ok) throw new Error(await response.text());
 
-    return await response.json();
+    return await parseJsonSiHayContenido(response);
 
 }
 

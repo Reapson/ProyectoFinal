@@ -4,27 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ConfiguraciÛn - Admin</title>
+    <title>Configuraci√≥n - Admin</title>
     <link rel="stylesheet" href="css/config.css">
 </head>
 
 <body>
     <header>
         <nav class="navbar">
-            <h1>ConfiguraciÛn del Sistema</h1>
+            <h1>Configuraci√≥n del Sistema</h1>
             <div>
                 <span id="usuario"></span>
                 <button id="btnVolver" class="btn-secondary">Volver al inicio</button>
-                <button id="logout" class="btn-danger">Cerrar sesiÛn</button>
+                <button id="logout" class="btn-danger">Cerrar sesi√≥n</button>
             </div>
         </nav>
     </header>
 
     <div class="container">
-        <!-- SecciÛn de GestiÛn de Roles -->
+        <!-- Secci√≥n de Gesti√≥n de Roles -->
         <section class="panel">
-            <h2>?? GestiÛn de Roles</h2>
-            
+            <h2>üîê Gesti√≥n de Roles</h2>
+
             <div class="section">
                 <h3>Usuarios y sus roles</h3>
                 <table id="usersTable" class="table">
@@ -58,19 +58,19 @@
             </div>
         </section>
 
-        <!-- SecciÛn de GestiÛn de Secrets -->
+        <!-- Secci√≥n de Gesti√≥n de Secrets -->
         <section class="panel">
-            <h2>?? GestiÛn de API Keys (Secrets)</h2>
-            
+            <h2>üîë Gesti√≥n de API Keys (Secrets)</h2>
+
             <div class="section">
                 <h3>Secrets almacenados</h3>
                 <table id="secretsTable" class="table">
                     <thead>
                         <tr>
                             <th>Clave</th>
-                            <th>DescripciÛn</th>
+                            <th>Descripci√≥n</th>
                             <th>Valor</th>
-                            <th>⁄ltima actualizaciÛn</th>
+                            <th>√öltima actualizaci√≥n</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -87,16 +87,16 @@
                 <div class="form-group">
                     <input type="text" id="secretKey" placeholder="Clave del secret (ej: NewsApiKey)">
                     <input type="text" id="secretValue" placeholder="Valor del secret">
-                    <input type="text" id="secretDescription" placeholder="DescripciÛn (opcional)">
+                    <input type="text" id="secretDescription" placeholder="Descripci√≥n (opcional)">
                     <button id="btnUpsertSecret" class="btn">Guardar Secret</button>
                 </div>
             </div>
         </section>
 
-        <!-- SecciÛn de Descarga/Subida de JSON -->
+        <!-- Secci√≥n de Descarga/Subida de JSON -->
         <section class="panel">
-            <h2>?? Descargar/Subir Items como JSON</h2>
-            
+            <h2>üì• Descargar/Subir Items como JSON</h2>
+
             <div class="section">
                 <h3>Descargar item</h3>
                 <p class="info">Selecciona un item guardado para descargarlo como JSON</p>
@@ -111,7 +111,7 @@
                 <div class="upload-area" id="uploadArea">
                     <input type="file" id="fileInput" accept=".json" style="display: none;">
                     <div class="upload-content">
-                        <p>?? Arrastra un archivo JSON aquÌ o haz clic para seleccionar</p>
+                        <p>üìé Arrastra un archivo JSON aqu√≠ o haz clic para seleccionar</p>
                     </div>
                 </div>
                 <div id="uploadResult" class="hidden"></div>
@@ -119,10 +119,10 @@
         </section>
     </div>
 
-    <!-- Modal de confirmaciÛn -->
+    <!-- Modal de confirmaci√≥n -->
     <div id="confirmModal" class="modal hidden">
         <div class="modal-content">
-            <h3 id="confirmTitle">ConfirmaciÛn</h3>
+            <h3 id="confirmTitle">Confirmaci√≥n</h3>
             <p id="confirmMessage"></p>
             <div class="modal-buttons">
                 <button id="confirmBtn" class="btn">Confirmar</button>

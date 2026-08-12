@@ -2,133 +2,552 @@
 <html lang="es">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noticias - Proyecto Final</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<meta charset="UTF-8">
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
 
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-<title>Noticias</title>
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
 
-<link rel="stylesheet" href="css/style.css">
+        nav h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
 
+        nav > div {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        #usuario {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        #logout {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        #logout:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .admin-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-section h2 {
+            margin-bottom: 20px;
+            color: #667eea;
+            font-size: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group input,
+        .form-group label {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .form-group input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        #btnFuente {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        #btnFuente:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        #btnConfig {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        #btnConfig:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .users-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+        }
+
+        .users-section h3 {
+            margin-bottom: 20px;
+            color: #1f2937;
+            font-size: 18px;
+        }
+
+        .users-dropdown {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .users-dropdown select {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .users-dropdown select:hover {
+            border-color: #667eea;
+        }
+
+        .users-dropdown select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .users-list {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .user-card {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .user-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .user-email {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .user-roles {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .role-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .role-badge.admin {
+            background: #dc2626;
+        }
+
+        .role-badge.editor {
+            background: #f59e0b;
+        }
+
+        .role-badge.user {
+            background: #10b981;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-small {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-assign {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-assign:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .btn-remove {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-remove:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        hr {
+            margin: 30px 0;
+            border: none;
+            border-top: 1px solid #eee;
+        }
+
+        .items-section {
+            margin-top: 40px;
+        }
+
+        .items-section h2 {
+            margin-bottom: 20px;
+            color: #1f2937;
+            font-size: 26px;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .item-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .item-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: white;
+        }
+
+        .item-header h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .item-header p {
+            font-size: 13px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .item-body {
+            padding: 20px;
+        }
+
+        .item-body p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            background: #f9fafb;
+            font-size: 13px;
+            color: #999;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .back-to-login {
+            display: inline-block;
+            margin-top: 20px;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-login:hover {
+            background: #764ba2;
+        }
+
+        .trending-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .trending-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .trending-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .trending-keyword {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .trending-count {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .trending-sentiment {
+            font-size: 12px;
+            opacity: 0.9;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sentiment-positive {
+            color: #4ade80;
+        }
+
+        .sentiment-neutral {
+            color: #fbbf24;
+        }
+
+        .sentiment-negative {
+            color: #f87171;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .trending-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .admin-section {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <header>
+        <nav>
+            <h1>📰 Proyecto Final</h1>
+            <div>
+                <span id="usuario">👤 Demo User</span>
+                <button id="logout">Cerrar sesión</button>
+            </div>
+        </nav>
+    </header>
 
-<header>
+    <div class="container">
+        <div id="adminPanel" class="admin-section" style="display: none;">
+            <h2>⚙️ Agregar Nueva Fuente</h2>
+            
+            <div class="form-group">
+                <input id="sourceName" placeholder="Nombre de la fuente" type="text">
+            </div>
 
-<nav>
+            <div class="form-group">
+                <input id="sourceUrl" placeholder="URL de la fuente" type="url">
+            </div>
 
-<h1>Proyecto Final</h1>
+            <div class="form-group">
+                <input id="sourceDescription" placeholder="Descripción" type="text">
+            </div>
 
-<div>
+            <div class="form-group">
+                <input id="componentType" placeholder="Tipo de componente" type="text">
+            </div>
 
-<span id="usuario"></span>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="requiresSecret">
+                    Requiere Secret (API Key)
+                </label>
+            </div>
 
-<button id="logout">
+            <div class="form-group">
+                <input id="secretKeyName" placeholder="Nombre de la Secret Key" type="text">
+            </div>
 
-Cerrar sesión
+            <button id="btnFuente">➕ Agregar Fuente</button>
 
-</button>
+            <a href="config.html" id="btnConfig">⚙️ Ir a Configuración de Admin</a>
 
-</div>
+            <div class="users-section">
+                <h3>👥 Gestión Rápida de Usuarios</h3>
+                <div class="users-dropdown">
+                    <select id="selectUserQuick">
+                        <option value="">-- Selecciona un usuario --</option>
+                    </select>
+                    <button id="btnRefreshUsers" style="padding: 12px 20px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                        🔄 Actualizar
+                    </button>
+                </div>
+                <div id="usersList" class="users-list"></div>
+            </div>
+        </div>
 
-</nav>
+        <div class="items-section">
+            <h2>📊 Tendencias del Momento</h2>
+            <div id="trendingContainer" class="trending-grid"></div>
+        </div>
 
-</header>
+        <div class="items-section">
+            <h2>📰 Últimas Noticias</h2>
+            <div id="itemsContainer" class="items-grid"></div>
+        </div>
 
-<div id="adminPanel" style="display:none;">
+        <div id="backToLogin" style="display: none; text-align: center; margin-top: 40px;">
+            <a href="login.html" class="back-to-login">← Volver al Login</a>
+        </div>
+    </div>
 
-<h2>Agregar Fuente</h2>
-
-<input id="sourceName" placeholder="Nombre">
-
-<input id="sourceUrl" placeholder="URL">
-
-<input id="sourceDescription" placeholder="Descripción">
-
-<input id="componentType" placeholder="Component Type">
-
-<label>
-
-<input type="checkbox" id="requiresSecret">
-
-Requiere Secret
-
-</label>
-
-<input id="secretKeyName" placeholder="Secret Key Name">
-
-<button id="btnFuente">
-
-Agregar Fuente
-
-</button>
-
-<hr>
-
-<a href="config.html" id="btnConfig" style="display:none; margin-top:20px;">
-
-⚙️ Ir a Configuración de Admin
-
-</a>
-
-</div>
-
-<div id="items">
-
-</div>
-
-<section id="trendingSection">
-
-<div class="trending-header">
-
-<h2>📊 Tendencias</h2>
-
-<div class="trending-stats">
-
-<span>Noticias analizadas: <strong id="totalItems">0</strong></span>
-
-<span>Palabras clave: <strong id="totalKeywords">0</strong></span>
-
-<span id="status">Cargando...</span>
-
-</div>
-
-<button id="refreshButton">🔄 Actualizar</button>
-
-</div>
-
-<div class="trending-grid">
-
-<div>
-
-<h3>Palabras clave más frecuentes</h3>
-
-<div id="keywordsContainer"></div>
-
-</div>
-
-<div>
-
-<h3>Sentimiento</h3>
-
-<div id="sentimentContainer"></div>
-
-</div>
-
-</div>
-
-</section>
-
-<script src="js/api.js"></script>
-
-<script src="js/auth.js"></script>
-
-<script src="js/landing.js"></script>
-
-<script src="js/trending.js"></script>
-
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/landing.js"></script>
 </body>
 
 </html>

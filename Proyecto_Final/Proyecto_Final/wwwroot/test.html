@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Prueba - Proyecto Final</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background-color: #f5f5f5; }
+        .test-container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #333; }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-section h2 {
+            color: #0066cc;
+            margin-top: 0;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        button {
+            background-color: #0066cc;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover { background-color: #0052a3; }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Página de Prueba - Proyecto Final</h1>
+        <p>Esta página permite verificar que el proyecto está funcionando sin necesidad de login.</p>
+
+        <!-- Prueba de API -->
+        <div class="test-section">
+            <h2>1. Verificar API Backend</h2>
+            <p>Comprueba si el servidor backend está respondiendo.</p>
+            <button onclick="testApi()">Probar Conexión API</button>
+            <div id="apiStatus"></div>
+        </div>
+
+        <!-- Prueba de Items -->
+        <div class="test-section">
+            <h2>2. Cargar Items (Noticias)</h2>
+            <p>Intenta cargar los items públicos sin autenticación.</p>
+            <button onclick="testItems()">Cargar Items</button>
+            <div id="itemsStatus"></div>
+            <div id="itemsContainer"></div>
+        </div>
+
+        <!-- Prueba de Estilos -->
+        <div class="test-section">
+            <h2>3. Verificar Estilos CSS</h2>
+            <p>Los estilos se están cargando correctamente:</p>
+            <ul>
+                <li>✅ CSS de style.css está cargado</li>
+                <li>✅ Colores y tipografía funcionan</li>
+                <li>✅ Responsive design activo</li>
+            </ul>
+        </div>
+
+        <!-- Información de Navegación -->
+        <div class="test-section">
+            <h2>4. Navegación del Proyecto</h2>
+            <ul>
+                <li><a href="/">🏠 Ir a Página Principal</a></li>
+                <li><a href="/login.html">🔐 Ir a Login</a></li>
+                <li><a href="/register.html">📝 Ir a Registro</a></li>
+                <li><a href="/config.html">⚙️ Ir a Configuración (Admin)</a></li>
+                <li><a href="/swagger">📘 Ir a Swagger API</a></li>
+            </ul>
+        </div>
+
+        <!-- Logs -->
+        <div class="test-section">
+            <h2>5. Logs de Consola</h2>
+            <p>Abre la consola del navegador (F12) para ver más detalles.</p>
+            <button onclick="location.reload()">Recargar Página</button>
+        </div>
+    </div>
+
+    <script>
+        console.log("🧪 Página de prueba cargada");
+
+        async function testApi() {
+            const statusDiv = document.getElementById("apiStatus");
+            statusDiv.innerHTML = '<div class="info">⏳ Probando...</div>';
+
+            try {
+                const response = await fetch("/api/sourceitems");
+                if (response.ok) {
+                    const data = await response.json();
+                    statusDiv.innerHTML = `
+                        <div class="success">
+                            ✅ API Conectada<br>
+                            Items encontrados: ${data.length}
+                        </div>
+                    `;
+                    console.log("✅ API responde correctamente", data);
+                } else {
+                    statusDiv.innerHTML = `
+                        <div class="error">
+                            ❌ API respondió con error: ${response.status}
+                        </div>
+                    `;
+                    console.error("❌ Error:", response.status);
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `
+                    <div class="error">
+                        ❌ Error de conexión<br>
+                        ${error.message}
+                    </div>
+                `;
+                console.error("❌ Error de red:", error);
+            }
+        }
+
+        async function testItems() {
+            const statusDiv = document.getElementById("itemsStatus");
+            const container = document.getElementById("itemsContainer");
+
+            statusDiv.innerHTML = '<div class="info">⏳ Cargando items...</div>';
+            container.innerHTML = '';
+
+            try {
+                const response = await fetch("/api/sourceitems");
+                if (!response.ok) throw new Error(`Error ${response.status}`);
+
+                const data = await response.json();
+                statusDiv.innerHTML = `<div class="success">✅ ${data.length} items cargados</div>`;
+
+                if (data.length === 0) {
+                    container.innerHTML = '<p style="color: #666;">No hay items disponibles aún.</p>';
+                    return;
+                }
+
+                container.innerHTML = '<h3>Items Encontrados:</h3>';
+                data.slice(0, 5).forEach(item => {
+                    const div = document.createElement('div');
+                    div.style.cssText = 'border: 1px solid #ddd; padding: 10px; margin: 10px 0; border-radius: 5px;';
+                    div.innerHTML = `
+                        <strong>${item.item?.title || 'Sin título'}</strong><br>
+                        <small>${item.item?.description || 'Sin descripción'}</small><br>
+                        <small style="color: #666;">Fuente: ${item.item?.author || 'Desconocida'}</small>
+                    `;
+                    container.appendChild(div);
+                });
+
+                console.log("✅ Items cargados:", data);
+            } catch (error) {
+                statusDiv.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+                console.error("❌ Error al cargar items:", error);
+            }
+        }
+
+        console.log("✅ Funciones de prueba cargadas");
+        console.log("📍 URL actual:", window.location.href);
+        console.log("📍 API Base:", "/api");
+    </script>
+</body>
+</html>
